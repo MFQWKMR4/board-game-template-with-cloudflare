@@ -1,7 +1,9 @@
-# bodoge-server
-- template
+# board game template with cloudflare
+- This is a template repository for creating online board game server with cloudflare workers, durable object and stuff.
+- This project has implemented my original board game "undo ando".
+  - You can read the rule(JP)(EN) and play it here.
 
-## ディレクトリ
+## composition
 ```
 bodoge/
 ├── src/
