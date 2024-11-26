@@ -1,7 +1,7 @@
 # board game template with cloudflare
 - This is a template repository for creating online board game server with cloudflare workers, durable object and stuff.
 - This project has implemented my original board game "undo ando".
-  - You can read the rule(JP)(EN) and play it here.
+  - You can read the rule([JP](https://mfqwkmr4.notion.site/undo-ando-13b1123f22e180b389d8d5c3b231fe87))([EN](https://mfqwkmr4.notion.site/undo-ando-English-14a1123f22e180259f72dde40a216470)) and play it [here](https://bodoge-fe.pages.dev/).
 
 ## composition
 ```
