@@ -1,0 +1,94 @@
+{
+    "players": [
+        {
+            "name": "John Doe",
+            "personality": "ando",
+            "state": "normal",
+            "hands": [
+                {
+                    "originalChar": "a",
+                    "char": "e",
+                    "value": 9
+                }
+            ]
+        },
+        {
+            "name": "Takahashi",
+            "personality": "ueno",
+            "state": "ready",
+            "hands": []
+        },
+        {
+            "name": "Mike Smith",
+            "personality": "bale",
+            "state": "normal",
+            "hands": [
+                {
+                    "originalChar": "a",
+                    "char": "e",
+                    "value": 9
+                },
+                {
+                    "originalChar": "l",
+                    "char": "l",
+                    "value": 0
+                },
+                {
+                    "originalChar": "b",
+                    "char": "q",
+                    "value": 9
+                }
+            ]
+        },
+        {
+            "name": "Suzuki",
+            "personality": "abe",
+            "state": "ready",
+            "hands": []
+        }
+    ],
+    "environment": {
+        "field": {
+            "top": {
+                "originalChar": "a",
+                "char": "e",
+                "value": 9
+            },
+            "sequence": "albe"
+        },
+        "cardPool": [
+            {
+                "originalChar": "a",
+                "char": "e",
+                "value": 9
+            },
+            {
+                "originalChar": "l",
+                "char": "l",
+                "value": 0
+            },
+            {
+                "originalChar": "b",
+                "char": "q",
+                "value": 9
+            }
+        ],
+        "cardQueue": [
+            {
+                "originalChar": "a",
+                "char": "e",
+                "value": 9
+            },
+            {
+                "originalChar": "l",
+                "char": "l",
+                "value": 0
+            },
+            {
+                "originalChar": "b",
+                "char": "q",
+                "value": 9
+            }
+        ]
+    }
+}

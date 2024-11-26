@@ -1,0 +1,625 @@
+openapi: 3.1.0
+
+info:
+  title: Bodoge API
+  version: 1.0.0
+
+paths:
+  /register:
+    post:
+      operationId: register
+      summary: register a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        400:
+          description: An error response
+  /create:
+    post:
+      summary: create a room
+      operationId: createRoom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoomRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRoomResponse'
+        400:
+          description: An error response
+  /join:
+    post:
+      summary: join a room
+      operationId: joinRoom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinRoomRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JoinRoomResponse'
+        400:
+          description: An error response
+  /dummy:
+    get:
+      summary: dummy endpoint
+      operationId: dummy
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dummy1:
+                    schema:
+                      ref: '#/components/schemas/WsMessage'
+                  dummy2:
+                    schema:
+                      ref: '#/components/schemas/WsGameStartFromServer'
+                  dummy3:
+                    schema:
+                      ref: '#/components/schemas/WsSystemStateFromServer'
+                  dummy4:
+                    schema:
+                      ref: '#/components/schemas/WsContinueToPlayFromClient'
+                  dummy5:
+                    schema:
+                      ref: '#/components/schemas/WsPlayCard'
+                  dummy6:
+                    schema:
+                      ref: '#/components/schemas/WsReceiveCard'
+                  dummy7:
+                    schema:
+                      ref: '#/components/schemas/WsFetch'
+                  dummy8:
+                    schema:
+                      ref: '#/components/schemas/WsAndoAbility'
+                  dummy9:
+                    schema:
+                      ref: '#/components/schemas/WsPowerUp'
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    RegisterResponse:
+      type: object
+      required:
+        - id
+        - token
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+    CreateRoomRequest:
+      type: object
+      required:
+        - name
+        - numberOfPlayers
+      properties:
+        name:
+          type: string
+        numberOfPlayers:
+          type: integer
+    CreateRoomResponse:
+      type: object
+      required:
+        - id
+        - roomKey
+      properties:
+        id:
+          type: string
+        roomKey:
+          type: string
+    JoinRoomRequest:
+      type: object
+      required:
+        - roomId
+      properties:
+        roomId:
+          type: string
+        isViewer:
+          type: boolean
+    JoinRoomResponse:
+      type: object
+      required:
+        - chatHistory
+        - roomKey
+      properties:
+        chatHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chat'
+        roomKey:
+          type: string
+    Chat:
+      type: object
+      required:
+        - message
+        - sender
+      properties:
+        message:
+          type: string
+        sender:
+          type: string
+    
+    WsMessage:
+      type: object
+      required:
+        - messageType
+        - body
+      properties:
+        body:
+          ref: '#/components/schemas/aaa'
+        messageType:
+          type: string
+
+    WsChooseHandFromClient:
+      type: object
+      required:
+        - playerId
+        - hand
+      properties:
+        playerId:
+          type: string
+        hand:
+          type: string
+
+    WsContinueToPlayFromClient:
+      type: object
+      required:
+        - playerId
+      properties:
+        playerId:
+          type: string
+
+    WsSystemStateFromServer:
+      type: object
+      required:
+        - gameState
+        - uiState
+      properties:
+        gameState:
+          $ref: '#/components/schemas/GameState'
+        uiState:
+          $ref: '#/components/schemas/UIState'
+        errorDetail:
+          $ref: '#/components/schemas/ErrorDetail'
+    
+    GameState:
+      type: object
+      required:
+        - versionId
+        - name
+        - playerIds
+        - phase
+        - numberOfPlayers
+        - gameLogicState
+      properties:
+        versionId:
+          type: string
+        name:
+          type: string
+        playerIds:
+          type: array
+          items:
+            type: string
+        phase:
+          $ref: '#/components/schemas/GamePhase'
+        numberOfPlayers:
+          type: integer
+        gameLogicState:
+          $ref: '#/components/schemas/GameLogicState'
+
+    GamePhase:
+      type: string
+      enum:
+        - WAITING
+        - PLAYING
+        - END
+    
+    UIStateCode:
+      type: string
+      enum:
+        - START
+        - INITIALIZING
+        - IN_YOUR_TURN
+        - IN_OTHERS_TURN
+        - PLAY_ONE_CARD
+        - PLAY_TWO_CARD
+        - PLAY_CARD_TO_OTHER
+        - UNDO_EFFECT_1
+        - UNDO_EFFECT_2
+        - PEEQ_EFFECT_1
+        - PEEQ_EFFECT_2
+        - YOU_WON
+        - YOU_LOST
+        - ERROR
+        - VIEWER
+        - END
+
+    UIState:
+      type: object
+      required:
+        - phase
+        - uiStateCode
+      properties:
+        phase:
+          $ref: '#/components/schemas/GamePhase'
+        uiStateCode:
+          $ref: '#/components/schemas/UIStateCode'
+    
+    GameLogicState:
+      type: object
+      required:
+        - deck
+        - turnPlayerId
+        - turnNumber
+        - orderedPlayerIds
+        - players
+        - environment
+        - isRevolving
+        - forClient
+        - chatHistory
+        - skipCount
+        - bannedChara
+        - loopSnapShot
+        - isNoAction
+        - andoAbilityCount
+        - isBoon
+        - readyCount
+      properties:
+        deck:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        turnPlayerId:
+          type: string
+        turnNumber:
+          type: integer
+        orderedPlayerIds:
+          type: array
+          items:
+            type: string
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+        environment:
+          $ref: '#/components/schemas/Environment'
+        isRevolving:
+          type: boolean
+        forClient:
+          $ref: '#/components/schemas/ForClient'
+        chatHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chat'
+        skipCount:
+          type: integer
+        bannedChara:
+          type: array
+          items:
+            $ref: '#/components/schemas/BannedChara'
+        loopSnapShot:
+          $ref: '#/components/schemas/LoopSnapShot'
+        isNoAction:
+          type: boolean
+        andoAbilityCount:
+          type: integer
+        isBoon:
+          type: boolean
+        readyCount:
+          type: integer
+    
+    LoopSnapShot:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/Card'
+
+    BannedChara:
+      type: object
+      required:
+        - chara
+        - playerId
+      properties:
+        chara:
+          type: string
+        playerId:
+          type: string
+
+    ForClient:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/UIStateCode'   
+
+    Hand:
+      type: object
+      additionalProperties:
+        type: string
+
+    ErrorDetail:
+      type: object
+      required:
+        - senderId
+        - requestJson
+        - errorSummary
+        - errorMessage
+      properties:
+        senderId:
+          type: string
+        requestJson:
+          type: string
+        errorSummary:
+          type: string
+        errorMessage:
+          type: string
+
+    Player:
+      type: object
+      required:
+        - playerId
+        - name
+        - personality
+        - state
+        - hands
+        - handsCount
+        - toSkip
+        - cannotReceiveCard
+        - power
+      properties:
+        playerId:
+          type: string
+          description: "The unique identifier of the player."
+        name:
+          type: string
+          description: "The name of the player, e.g., John Doe."
+        personality:
+          type: string
+          enum: [ando, ueno, abe, bale, NONE]
+          description: "The personality assigned to the player, such as ando, ueno, bale."
+        state:
+          type: string
+          enum: [normal, ready]
+          description: "The current state of the player, e.g., normal or ready."
+        hands:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+          description: "List of cards currently held by the player."
+        handsCount:
+          type: integer
+          description: "The number of cards currently held by the player."
+        toSkip:
+          type: boolean
+          description: "Flag indicating whether the player should skip their turn."
+        cannotReceiveCard:
+          type: boolean
+          description: "Flag indicating whether the player can receive a card."
+        power:
+          type: integer
+          description: "The power of the player."
+        
+    Card:
+      type: object
+      required:
+        - id
+        - originalChara
+        - chara
+        - value
+        - conditionsToPlay
+      properties:
+        id:
+          type: string
+          description: "The unique identifier of the card."
+        originalChara:
+          type: string
+          description: "The original character symbol on the card."
+        chara:
+          type: string
+          description: "The character representation used during the game."
+        value:
+          type: integer
+          description: "Numeric value associated with the card."
+        conditionsToPlay:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToPlay'
+      
+    PlayReason:
+      type: string
+      enum: [ByChara, ByValue , ByWordPlay, ByWordPlay2]
+
+    ToPlay:
+      type: object
+      required:
+        - chara
+        - isAbleToPlay
+      properties:
+        chara:
+          type: string
+          description: "The character representation used during the game."
+        isAbleToPlay:
+          type: boolean
+          description: "Flag indicating whether the card can be played."
+        reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayReason'
+          description: "List of reasons why the card cannot be played."
+        previousCharas:
+          type: array
+          items:
+            type: string
+
+    Environment:
+      type: object
+      required:
+        - field
+        - cardPool
+        - cardQueue
+      properties:
+        field:
+          $ref: '#/components/schemas/Field'
+        cardPool:
+          $ref: '#/components/schemas/CardPool'
+        cardQueue:
+          $ref: '#/components/schemas/CardQueue'
+    
+    CardPool:
+      type: object
+      required:
+        - amount
+      properties:
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+          description: "The pool of available cards that players can draw from."
+        amount:
+          type: integer
+          description: "this tells only the length of the pool, not the cards in it."
+
+    CardQueue:
+      type: object
+      required:
+        - amount
+      properties:
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+          description: "The queue of cards arranged in a specific order."
+        amount:
+          type: integer
+          description: "this tells only the length of the queue, not the cards in it."
+
+    Field:
+      type: object
+      required:
+        - top
+        - sequence
+      properties:
+        top:
+          $ref: '#/components/schemas/Card'
+          description: "The card currently at the top of the field."
+        sequence:
+          type: string
+          description: "The sequence of characters played on the field."
+
+    Destination:
+      type: string
+      enum: [field, cardPool, cardQueue, skip]
+    
+    WsFetch:
+      type: object
+      required:
+        - playerId
+      properties:
+        playerId:
+          type: string
+        isViewer:
+          type: boolean
+
+    WsPlayCard:
+      type: object
+      required:
+        - playerId
+        - cards
+        - destination
+      properties:
+        playerId:
+          type: string
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        destination:
+          $ref: '#/components/schemas/Destination'
+
+    WsReceiveCard:
+      type: object
+      required:
+        - playerId
+        - source
+        - isSkip
+      properties:
+        playerId:
+          type: string
+        card:
+          $ref: '#/components/schemas/Card'
+        source:
+          $ref: '#/components/schemas/Destination'
+        isSkip:
+          type: boolean
+
+    WsChoosePlayer:
+      type: object
+      required:
+        - playerId
+        - targetPlayerId
+        - effect
+      properties:
+        playerId:
+          type: string
+        targetPlayerId:
+          type: string
+        effect:
+          type: string
+
+    WsAndoAbility:
+      type: object
+      required:
+        - playerId
+        - targetPlayerId
+        - card
+      properties:
+        playerId:
+          type: string
+        targetPlayerId:
+          type: string
+        card:
+          $ref: '#/components/schemas/Card'
+
+    WsPowerUp:
+      type: object
+      required:
+        - playerId
+        - card
+      properties:
+        playerId:
+          type: string
+        card:
+          $ref: '#/components/schemas/Card'

@@ -1,0 +1,26 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "PROJECT_NAME"
+workers_dev = true
+main = "src/index.ts"
+compatibility_date = "2024-MM-DD"
+account_id = "CF_ACCOUNT_ID"
+
+[[durable_objects.bindings]]
+name = "DO_NAME_UPPER_CASE"
+class_name = "DO_CLASS_NAME"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["DO_CLASS_NAME"]
+
+[[kv_namespaces]]
+binding = "BODOGE"
+id = "ID"
+preview_id = "PREVIEW_ID"
+
+[observability]
+enabled = true
+
+# 
+# [vars]
+# JWT_SECRET = "aaaaaaa"

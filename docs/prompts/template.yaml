@@ -1,0 +1,28 @@
+prompt_template:
+  goal: 
+    description: "Execute the given instruction in 'XXXXXXXXXXXXXXX' by generating the appropriate response or output."
+    example: "Generate a response that fulfills the instruction provided in 'XXXXXXXXXXXXXXX'."
+
+  context:
+    project_stage: "Interpretation and execution of given instruction."
+    tech_stack: "Flexible, depending on the instruction provided."
+    example: 
+      project_stage: "Processing and fulfilling prompt instruction."
+      tech_stack: ["Any relevant language or framework"]
+
+  constraints:
+    technical_constraints:
+      - description: "Follow any specific guidelines relevant to the instruction."
+      - example: ["Ensure output format aligns with instruction requirements", "Include necessary comments or explanations."]
+    output_requirements:
+      format: "Output format should follow the structure or format implied by the instruction."
+      example: "Provide output in code blocks or YAML, depending on the instruction."
+
+  user_requirements:
+    description: "Execute the instruction accurately and thoroughly, meeting all implied or explicit requirements."
+    example: "If the instruction requires code, ensure it is syntactically correct and functional."
+
+  additional_instructions:
+    emphasis: 
+      - "Prioritize clarity and precision in the output."
+      - "Include comments or explanations as needed to enhance understanding."

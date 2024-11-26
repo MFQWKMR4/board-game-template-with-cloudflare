@@ -1,0 +1,25 @@
+{
+  "name": "bodoge",
+  "scripts": {
+    "dev": "wrangler dev",
+    "check": "tsc --noEmit",
+    "deploy": "wrangler deploy --minify",
+    "test": "vitest",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "gen": "openapi-generator-cli generate -g typescript-fetch -i ./schema/openapi.yaml -o src/types/ --additional-properties=modelPropertyNaming=camelCase && openapi-generator-cli generate -g typescript-fetch -i ./schema/openapi.yaml -o ../bodoge-fe/src/types/ --additional-properties=modelPropertyNaming=camelCase",
+    "tool:gen": "tsc ./tool/gen-transition.ts --outDir ./tool/dist  && node ./tool/dist/gen-transition.js < ./schema/state_machine.md > ./src/game/transition.ts",
+    "help": "tsc --help"
+  },
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.15.0",
+    "hono": "^4.6.7",
+    "uuid": "^11.0.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "openapi-typescript": "^7.4.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4",
+    "wrangler": "^3.88.0"
+  }
+}
